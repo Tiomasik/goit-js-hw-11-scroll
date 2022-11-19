@@ -4,6 +4,7 @@ import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 import makeCard from "./tamplatea/get-card.hbs";
 import { asyncGetAxios } from "./getAxios";
+// import OnlyScroll from 'only-scrollbar';
 
 export { getCard, getCardMore, disableBtn, clearAll }
 
@@ -16,12 +17,23 @@ const refs = {
 let maxOnPage = 40;
 let counter = 1;
 let valueInput;
-let gallery = new SimpleLightbox('.gallery a', { captionDelay: 250, captionsData: `alt`});
+let gallery = new SimpleLightbox('.gallery a', { captionDelay: 250, captionsData: `alt` });
+
 
 refs.btnLoadMore.setAttribute('disabled', 'disabled');
 refs.formEl.addEventListener('submit', sendForm);
 refs.btnLoadMore.addEventListener('click', sendMore);
 refs.cardGallery.addEventListener('click', onTagsClickGallary);
+
+const scrollMore = (([entry], observer) => {
+    if (entry.isIntersecting) {
+        observer.unobserve(entry.target);
+        console.log('LAST!!!!!');
+        sendMore()
+    }
+})
+
+let infiniteObserver = new IntersectionObserver(scrollMore);
 
 function sendForm(evt) {
     counter = 1;
@@ -54,7 +66,12 @@ function makeNextStep(resulte) {
         Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
     }
     gallery.refresh();
-    counter +=1;
+    counter += 1;
+
+    const lastCard = document.querySelector('.photo-card:last-child');
+    if (lastCard) {
+        infiniteObserver.observe(lastCard)
+    }
 }
 
 function disableBtn() {
