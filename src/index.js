@@ -36,7 +36,7 @@ const scrollMore = ((entries, observer) => {
 
 option = {
   root: null,
-  rootMargin: '300px',
+  rootMargin: '350px',
   threshold: 1.0
 };
 
