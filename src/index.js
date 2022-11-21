@@ -34,13 +34,13 @@ const scrollMore = ((entries, observer) => {
     });
 })
 
-option = {
+optionObserver = {
   root: null,
   rootMargin: '350px',
   threshold: 1.0
 };
 
-let infiniteObserver = new IntersectionObserver(scrollMore, option);
+let infiniteObserver = new IntersectionObserver(scrollMore, optionObserver);
 
 function sendForm(evt) {
     counter = 1;
