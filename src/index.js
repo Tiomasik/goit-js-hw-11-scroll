@@ -25,15 +25,22 @@ refs.formEl.addEventListener('submit', sendForm);
 refs.btnLoadMore.addEventListener('click', sendMore);
 refs.cardGallery.addEventListener('click', onTagsClickGallary);
 
-const scrollMore = (([entry], observer) => {
-    if (entry.isIntersecting) {
+const scrollMore = ((entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
         observer.unobserve(entry.target);
-        console.log('LAST!!!!!');
         sendMore()
-    }
+        }
+    });
 })
 
-let infiniteObserver = new IntersectionObserver(scrollMore);
+option = {
+  root: null,
+  rootMargin: '300px',
+  threshold: 1.0
+};
+
+let infiniteObserver = new IntersectionObserver(scrollMore, option);
 
 function sendForm(evt) {
     counter = 1;
